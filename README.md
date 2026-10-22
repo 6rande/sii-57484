@@ -16,6 +16,11 @@ Este repositorio contiene el material utilizado en las prácticas de la asignatu
 
 El objetivo de la asignatura es introducir en el desarrollo de aplicaciones para sistemas informáticos industriales, haciendo especial énfasis en el uso del lenguaje C y del sistema operativo Linux.
 
+En este repositorio se modificará un juego incompleto de tenis.
+
+Durante la práctica 1 se han añadido el movimiento de esfera y raqueta.
+Durante la prática 2 se han usado tuberias para unir dos jugadores, cuando uno de los dos alcance 3 puntos el juego se cierra automaticamente. 
+
 ---
 
 ## 📚 Wiki

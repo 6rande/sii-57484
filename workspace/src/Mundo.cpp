@@ -4,7 +4,9 @@
 #include <fstream>
 #include "Mundo.h"
 #include "glut.h"
-
+#include <fcntl.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -135,6 +137,13 @@ void CMundo::OnTimer(int value)
 		esfera.velocidad.x=2+2*rand()/(float)RAND_MAX;
 		esfera.velocidad.y=2+2*rand()/(float)RAND_MAX;
 		puntos2++;
+		
+		
+    char cadena[1024];
+    sprintf(cadena, "Jugador 2 acaba de marcar, tiene %d \n", puntos2);
+    write(tuberia, cadena, strlen(cadena)); 
+    
+    
 	}
 
 	if(fondo_dcho.Rebota(esfera))
@@ -144,8 +153,20 @@ void CMundo::OnTimer(int value)
 		esfera.velocidad.x=-2-2*rand()/(float)RAND_MAX;
 		esfera.velocidad.y=-2-2*rand()/(float)RAND_MAX;
 		puntos1++;
+		
+    char cadena[1024];
+    sprintf(cadena, "Jugador 1 acaba de marcar, tiene %d \n", puntos1);
+    write(tuberia, cadena, strlen(cadena)); 
+    
+    
+    
+    
+		
 	}
-
+	
+    if(puntos1 >= 3 || puntos2 >= 3){
+    exit(0); 
+}
 }
 
 void CMundo::OnKeyboardDown(unsigned char key, int x, int y)
@@ -192,4 +213,9 @@ void CMundo::Init()
 	jugador2.g=0;
 	jugador2.x1=6;jugador2.y1=-1;
 	jugador2.x2=6;jugador2.y2=1;
+	
+	
+	//Para la tuberia
+	tuberia = open("FIFO", O_WRONLY); 
+	
 }
