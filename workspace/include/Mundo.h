@@ -1,7 +1,7 @@
 // Mundo.h: interface for the CMundo class.
 //
 //////////////////////////////////////////////////////////////////////
-
+#pragma once
 #if !defined(AFX_MUNDO_H__9510340A_3D75_485F_93DC_302A43B8039A__INCLUDED_)
 #define AFX_MUNDO_H__9510340A_3D75_485F_93DC_302A43B8039A__INCLUDED_
 
@@ -9,11 +9,12 @@
 #include "Plano.h"
 
 #if _MSC_VER > 1000
-#pragma once
+
 #endif // _MSC_VER > 1000
 
 #include "Esfera.h"
 #include "Raqueta.h"
+#include "DatosMemCompartida.h"
 
 class CMundo  
 {
@@ -33,6 +34,9 @@ public:
 	Plano fondo_dcho;
 	Raqueta jugador1;
 	Raqueta jugador2;
+	
+	DatosMemCompartida* datos; 
+	char* direccion; 
 
 	int puntos1;
 	int puntos2;

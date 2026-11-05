@@ -11,6 +11,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include "DatosMemCompartida.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -36,6 +40,8 @@ void CMundo::InitGL()
 	
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective( 40.0, 800/600.0f, 0.1, 150);
+	
+	
 }
 
 void print(char *mensaje, int x, int y, float r, float g, float b)
@@ -120,6 +126,15 @@ void CMundo::OnTimer(int value)
 	jugador1.Mueve(0.025f);
 	jugador2.Mueve(0.025f);
 	esfera.Mueve(0.025f);
+	
+	datos->esfera.centro.y = esfera.centro.y; 
+	datos->raqueta1 = jugador1;  
+	
+	if(datos->accion ==-1) CMundo::OnKeyboardDown('s', 0, 0); 
+	if(datos->accion ==1) CMundo::OnKeyboardDown('w', 0, 0); 
+	
+	
+	
 	int i;
 	for(i=0;i<paredes.size();i++)
 	{
@@ -164,6 +179,8 @@ void CMundo::OnTimer(int value)
 		
 	}
 	
+    
+	
     if(puntos1 >= 3 || puntos2 >= 3){
     exit(0); 
 }
@@ -173,13 +190,13 @@ void CMundo::OnKeyboardDown(unsigned char key, int x, int y)
 {
 	switch(key)
 	{
-//	case 'a':jugador1.velocidad.x=-1;break;
-//	case 'd':jugador1.velocidad.x=1;break;
+	//case 'a':jugador1.velocidad.x=-1;break;
+	//case 'd':jugador1.velocidad.x=1;break;
 	case 's':jugador1.velocidad.y=-4;break;
 	case 'w':jugador1.velocidad.y=4;break;
 	case 'l':jugador2.velocidad.y=-4;break;
 	case 'o':jugador2.velocidad.y=4;break;
-
+	
 	}
 }
 
@@ -217,5 +234,21 @@ void CMundo::Init()
 	
 	//Para la tuberia
 	tuberia = open("FIFO", O_WRONLY); 
+	
+	int fd; 
+	
+	fd = open("DatosMemoria", O_RDWR|O_CREAT|O_TRUNC, 0666); 
+	ftruncate(fd, sizeof(DatosMemCompartida)); 
+	
+	direccion =(char*) mmap(NULL, sizeof(DatosMemCompartida) , PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+	if (direccion == MAP_FAILED)
+	{
+		perror("Error en la proyeccion mmap"); 
+    
+	}
+	
+	close(fd); 
+	datos=(DatosMemCompartida*)direccion;
+	
 	
 }
